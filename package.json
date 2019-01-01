@@ -1,0 +1,34 @@
+{
+  "name": "rest_graphql_mongoose",
+  "version": "1.0.0",
+  "description": "let's learn graph QL",
+  "main": "index.js",
+  "scripts": {
+    "test": "npm run test",
+    "start": "nodemon app.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/nguyenthanhptiter11/rest_graphql_mongoose.git"
+  },
+  "keywords": [
+    "restful",
+    "graphQL",
+    "mongodb",
+    "mongose"
+  ],
+  "author": "thanhnv.js",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/nguyenthanhptiter11/rest_graphql_mongoose/issues"
+  },
+  "homepage": "https://github.com/nguyenthanhptiter11/rest_graphql_mongoose#readme",
+  "dependencies": {
+    "body-parse": "^0.1.0",
+    "body-parser": "^1.18.3",
+    "express": "^4.16.4",
+    "express-graphql": "^0.7.1",
+    "graphql": "^14.0.2",
+    "nodemon": "^1.18.9"
+  }
+}
