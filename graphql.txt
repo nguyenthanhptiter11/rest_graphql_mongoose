@@ -1,0 +1,29 @@
+v3:
+mutation {
+    createEvent(name: 'sport')
+}
+
+query {
+    events
+}
+
+v3:
+mutation {
+  crateEvent(eventInput: {
+      title: "sport",
+      description: "ddssd",
+      price: 100,
+      date: "Thu Nov 15 2018 00:00:00 GMT+0700 (+07)"
+  })
+  {
+    title,
+    date
+  }
+}
+
+query {
+  events {
+    _id,
+    date
+  }
+}
