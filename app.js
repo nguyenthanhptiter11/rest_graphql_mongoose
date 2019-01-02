@@ -47,7 +47,7 @@ app.use('/graphql',
         `),
         rootValue: {
             events: () => {
-                Event.find().then(events => {
+                return Event.find().then(events => {
                     return events.map(event => {
                         console.log(eventMapped(event))
                         // return { ...event._doc, _id: event._doc.id }
@@ -64,7 +64,7 @@ app.use('/graphql',
                     price: +args.eventInput.price,
                     date: new Date(args.eventInput.date)
                 })
-                event.save().then(result => {
+                return event.save().then(result => {
                     console.log(result)
                     // not run return { ...result._doc, _id: result._doc.id }
                     return eventMapped(result)
