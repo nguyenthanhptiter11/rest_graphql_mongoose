@@ -1,0 +1,7 @@
+{
+    "env": {
+        "MONGODB_ATLAS_USER": "thanhnv_js",
+        "MONGODB_ATLAS_PW": "Th%40nhth%40nh%404",
+        "MONGODB_ATLAS_DB_NAME": "test"
+    }
+}
