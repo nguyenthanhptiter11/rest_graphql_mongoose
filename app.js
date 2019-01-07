@@ -12,6 +12,36 @@ const User = require('./models/user')
 
 app.use(bodyParser.json())
 
+const events_ = eventIds => {
+    return Event.find({ _id: { $in: eventIds } })
+        .then(events => {
+            return events.map(event => {
+                return {
+                    ...event._doc,
+                    _id: event.id,
+                    creator: user.bind(this, event.creator)
+                }
+            })
+        })
+        .catch(err => {
+            throw err
+        })
+}
+
+const user = userId => {
+    return User.findById(userId)
+        .then(result => {
+            return {
+                ...result._doc,
+                _id: result.id,
+                createdEvents: events_.bind(this, result._doc.createdEvents)
+            }
+        })
+        .catch(err => {
+            throw err
+        })
+}
+
 app.get('/', (req, res, next) => {
     res.send('hello world')
 })
@@ -24,13 +54,15 @@ app.use('/graphql',
                 title: String!
                 description: String!
                 price: Float!
-                date: String!
+                date: String!,
+                creator: User!
             }
 
             type User {
                 _id: ID!
                 email: String!,
-                password: String
+                password: String,
+                createdEvents: [Event!]
             }
 
             input EventInput {
@@ -50,7 +82,7 @@ app.use('/graphql',
             }
 
             type RootMutation {
-                crateEvent(eventInput: EventInput): Event
+                createEvent(eventInput: EventInput): Event
                 createUser(userInput: UserInput): User
             }
 
@@ -61,17 +93,23 @@ app.use('/graphql',
         `),
         rootValue: {
             events: () => {
-                return Event.find().then(events => {
+                return Event.find()
+                .then(events => {
                     return events.map(event => {
                         console.log(eventMapped(event))
-                        return { ...event._doc, _id: event._doc.id }
-                        return eventMapped(event)
+                        return {
+                            ...event._doc,
+                            _id: event.id,
+                            creator: user.bind(this, event.creator)
+                        }
                     })
-                }).catch(err => {
+                })
+                .catch(err => {
+                    console.log(err, 'kkkkkkkkkkkkkkkk')
                     throw err
                 })
             },
-            crateEvent: (args) => {
+            createEvent: (args) => {
                 const event = new Event({
                     title: args.eventInput.title,
                     description: args.eventInput.description,
@@ -83,7 +121,7 @@ app.use('/graphql',
                 return event
                     .save()
                     .then(result => {
-                        createdEvent = { ...result._doc, _id: result._doc.id }
+                        createdEvent = { ...result._doc, _id: result.id, creator: user.bind(this, result.creator)}
                         return User.findById('5c337a9cea77d22706eb1a22')
                     })
                     .then(user => {
@@ -117,7 +155,7 @@ app.use('/graphql',
                             return user.save()
                         })
                         .then(result => {
-                            return { ...result._doc, password: null, _id: result._doc.id }
+                            return { ...result._doc, password: null, _id: result.id }
                         })
                         .catch(err => {
                             throw err

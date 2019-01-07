@@ -9,7 +9,7 @@ query {
 
 v3:
 mutation {
-  crateEvent(eventInput: {
+  createEvent(eventInput: {
     title: "sport",
     description: "ddssd",
     price: 100,
@@ -35,4 +35,38 @@ mutation{
     password
   }
   
+}
+
+query {
+  events {
+    _id
+    title
+    description
+    price
+    date
+    creator {
+      _id
+      email
+      password
+    }
+  }
+}
+
+loop
+query {
+  events {
+    _id
+    title
+    description
+    price
+    date
+    creator {
+      _id
+      email
+      password
+      createdEvents {
+        title
+      }
+    }
+  }
 }
