@@ -27,3 +27,12 @@ query {
     date
   }
 }
+
+v6
+mutation{
+  createUser(userInput: {email: "heel@hhd", password: "sdds"}) {
+    email 
+    password
+  }
+  
+}
