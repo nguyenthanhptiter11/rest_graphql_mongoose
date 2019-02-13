@@ -43,3 +43,5 @@ About to write to /home/default/git-thanh-dev/rest_graphql_mongoose/package.json
 
 Is this OK? (yes) yes
 [default@localhost rest_graphql_mongoose]$ npm install -save express body-parse nodemon
+
+trying
