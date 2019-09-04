@@ -1,0 +1,72 @@
+v3:
+mutation {
+    createEvent(name: 'sport')
+}
+
+query {
+    events
+}
+
+v3:
+mutation {
+  createEvent(eventInput: {
+    title: "sport",
+    description: "ddssd",
+    price: 100,
+    date: "2019-12-30T00:00:00.000Z"
+  })
+  {
+    title,
+    date
+  }
+}
+
+query {
+  events {
+    _id,
+    date
+  }
+}
+
+v6
+mutation{
+  createUser(userInput: {email: "heel@hhd", password: "sdds"}) {
+    email 
+    password
+  }
+  
+}
+
+query {
+  events {
+    _id
+    title
+    description
+    price
+    date
+    creator {
+      _id
+      email
+      password
+    }
+  }
+}
+
+loop
+query {
+  events {
+    _id
+    title
+    description
+    price
+    date
+    creator {
+      _id
+      email
+      password
+      createdEvents {
+        title
+      }
+    }
+  }
+}

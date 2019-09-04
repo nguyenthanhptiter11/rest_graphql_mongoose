@@ -1,9 +1,13 @@
 const express = require('express')
 const bodyParser = require('body-parser')
 const graphqlHttp = require('express-graphql')
-const { buildSchema } = require('graphql')
+const mongoose = require('mongoose')
+
+const graphQlSchema = require('./grapql/schema')
+const graphQlResolvers = require('./grapql/resolvers')
 
 const app = express()
+
 app.use(bodyParser.json())
 
 app.get('/', (req, res, next) => {
@@ -12,32 +16,26 @@ app.get('/', (req, res, next) => {
 
 app.use('/graphql',
     graphqlHttp({
-        schema: buildSchema(`
-            type RootQuery {
-                events: [String!]!
-            }
-
-            type RootMutation {
-                crateEvent(name: String): String
-            }
-
-            schema {
-                query: RootQuery
-                mutation: RootMutation
-            }
-        `),
-        rootValue: {
-            events: () => {
-                return ['Running', 'Coding'];
-            },
-            crateEvent: (args) => {
-                const eventName = args.name
-                return eventName
-            }
-        },
+        schema: graphQlSchema,
+        rootValue: graphQlResolvers,
         graphiql: true
     }))
 
-app.listen(3000)
+const uri = 'mongodb://' + process.env.MONGODB_ATLAS_USER + ':' + process.env.MONGODB_ATLAS_PW +
+    '@node-js-mongoose-shard-00-00-554zu.mongodb.net:27017,' +
+    'node-js-mongoose-shard-00-01-554zu.mongodb.net:27017,' +
+    'node-js-mongoose-shard-00-02-554zu.mongodb.net:27017/' + process.env.MONGODB_ATLAS_DB_NAME +
+    '?ssl=true&replicaSet=node-js-mongoose-shard-0&authSource=admin&retryWrites=true'
+mongoose.connect(uri,
+    {
+        useNewUrlParser: true
+    })
+    .then(() => {
+        console.log('MONGOOSE CONNECT SUCESS')
+        app.listen(3000)
+    },
+    err => {
+        console.log('MONGOOSE CONNECT ERROR', err)
+    })
 
 
