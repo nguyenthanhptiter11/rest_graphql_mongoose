@@ -70,3 +70,37 @@ query {
     }
   }
 }
+
+query {
+  bookings {
+    _id
+    user {
+      email
+    }
+    event {
+      title
+    }
+    createdAt
+    updatedAt
+  }
+}
+
+mutation {
+  bookEvent(eventId: "5c337ac4fcbb7b27a47545e4") {
+    _id
+    createdAt
+    user {
+      email
+    }
+  }
+}
+
+
+mutation {
+  cancelBooking(bookingId: "5c337ac4fcbb7b27a47545e4") {
+    title
+    creator {
+      email
+    }
+  }
+}
