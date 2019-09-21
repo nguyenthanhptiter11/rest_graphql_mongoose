@@ -10,8 +10,11 @@ const {
 
 module.exports = {
     bookings: async () => {
+
         try {
-            const bookings = await Booking.find();
+
+            const bookings = await Booking.find()
+
             return bookings.map(booking => {
                 return {
                     ...booking._doc,
@@ -24,20 +27,34 @@ module.exports = {
                 }
             })
         } catch (err) {
+
             throw err
         }
     },
-    bookEvent: async args => {
+    bookEvent: async (args, req) => {
+
+        if (!req.isAuth) {
+
+            throw new Error('Unauthenticated!!!')
+        }
+
         try {
+
             const eventFinder = await Event.findOne({
                 _id: args.eventId
             })
+
+            if (!eventFinder) {
+
+                throw new Error('Event is not exist!!!')
+            }
+
             const booking = new Booking({
-                user: '5c337a9cea77d22706eb1a22',
+                user: req.userId,
                 event: eventFinder
             })
             const result = await booking.save()
-            console.log(result._doc.event)
+
             return {
                 ...result._doc,
                 _id: result.id,
@@ -46,19 +63,33 @@ module.exports = {
                 updatedAt: DateHelpers.dateToISOString(result._doc.updatedAt)
             }
         } catch (err) {
+
             throw err
         }
     },
-    cancelBooking: async args => {
+    cancelBooking: async (args, req) => {
+
+        if (!req.isAuth) {
+
+            throw new Error('Unauthenticated!!!')
+        }
+
         try {
-            const booking = await Booking.findById(args.bookingId).populate('event')
-            const event = eventFormater(booking.event)
+            const bookingFinder = await Booking.findById(args.bookingId).populate('event')
+
+            if (!bookingFinder) {
+
+                throw new Error('Booking was deleted!');
+            }
+
+            const event = eventFormater(bookingFinder.event)
             await Booking.deleteOne({
                 _id: args.bookingId
             })
+
             return event
         } catch (err) {
-            console.log(err)
+
             throw err
         }
     }

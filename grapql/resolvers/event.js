@@ -7,22 +7,33 @@ const {
 
 module.exports = {
     events: async () => {
+
         try {
+
             const eventsFinder = await Event.find()
+
             return eventsFinder.map(event => {
+
                 return eventFormater(event)
             })
         } catch (err) {
+
             throw err
         }
     },
-    createEvent: async (args) => {
+    createEvent: async (args, req) => {
+
+        if (!req.isAuth) {
+
+            throw new Error('Unauthenticated!!!')
+        }
+
         try {
-            const creator = await User.findById('5c337a9cea77d22706eb1a22')
+
+            const creator = await User.findById(req.userId)
             if (!creator) {
 
                 throw new Error('User is not exits.')
-
             }
 
             const event = new Event({
@@ -30,7 +41,7 @@ module.exports = {
                 description: args.eventInput.description,
                 price: +args.eventInput.price,
                 date: new Date(args.eventInput.date),
-                creator: '5c337a9cea77d22706eb1a22'
+                creator: req.userId
             })
             const result = await event.save()
             const createdEvent = eventFormater(result)
@@ -39,6 +50,7 @@ module.exports = {
             await creator.save()
             return createdEvent
         } catch (err) {
+
             throw err
         }
     }

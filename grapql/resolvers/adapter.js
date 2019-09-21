@@ -1,6 +1,3 @@
-// TODO: async all
-
-
 const bcrypt = require('bcryptjs')
 
 const Event = require('../../models/event')
@@ -9,6 +6,7 @@ const User = require('../../models/user')
 const DateHelpers = require('../../libs/DateHelpers')
 
 const events_ = async eventIds => {
+
     try {
 
         const eventsFinder = await Event.find({
@@ -17,6 +15,7 @@ const events_ = async eventIds => {
             }
         })
         return eventsFinder.map(event => {
+
             return eventFormater(event)
         })
     } catch (err) {
@@ -26,6 +25,7 @@ const events_ = async eventIds => {
 }
 
 const userById = async userId => {
+
     try {
 
         const userFinder = await User.findById(userId)
@@ -36,16 +36,19 @@ const userById = async userId => {
         }
 
     } catch (err) {
+
         throw err
     }
 }
 
 const eventById = async (eventId) => {
+
     try {
 
         const event = await Event.findById(eventId)
         return eventFormater(event)
     } catch (err) {
+
         throw err
     }
 }

@@ -5,6 +5,7 @@ const mongoose = require('mongoose')
 
 const graphQlSchema = require('./grapql/schema')
 const graphQlResolvers = require('./grapql/resolvers')
+const isAuth = require('./middleware/auth')
 
 const app = express()
 
@@ -13,6 +14,8 @@ app.use(bodyParser.json())
 app.get('/', (req, res, next) => {
     res.send('hello world')
 })
+
+app.use(isAuth)
 
 app.use('/graphql',
     graphqlHttp({

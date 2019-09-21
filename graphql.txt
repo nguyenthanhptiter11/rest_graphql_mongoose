@@ -104,3 +104,30 @@ mutation {
     }
   }
 }
+
+
+query {
+  login(email: "heel@hhd", password: "sdds") {
+    userId
+    token
+    tokenExpiration
+  }
+}
+
+// postman
+
+{
+	"query": "query { login(email:\"heel@hhd\", password: \"sdds\") { token } }"
+}
+
+{
+	"query": "mutation { createEvent(eventInput: { title: \"sport\", description: \"ddssd\", price: 100, date: \"2019-12-30T00:00:00.000Z\" }) { title date } }"
+}
+
+{
+  "query": "mutation { bookEvent(eventId: \"5c337ac4fcbb7b27a47545e4\") { _id createdAt user { email } } }"
+}
+
+{
+  "query": "mutation { cancelBooking(bookingId: \"5c337ac4fcbb7b27a47545e4\") { title creator { email } } }"
+}
