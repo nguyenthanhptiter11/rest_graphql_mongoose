@@ -11,8 +11,18 @@ const app = express()
 
 app.use(bodyParser.json())
 
+app.use((req, res, next) => {
+    res.setHeader('Access-Control-Allow-Origin', '*');
+    res.setHeader('Access-Control-Allow-Methods', 'POST,GET,OPTIONS');
+    res.setHeader('Access-Control-Allow-Headers', 'Content-Type, Authorization');
+    if (req.method === 'OPTIONS') {
+      return res.sendStatus(200);
+    }
+    next();
+});
+
 app.get('/', (req, res, next) => {
-    res.send('hello world')
+    res.send({tsu: 'hello world'})
 })
 
 app.use(isAuth)
@@ -29,13 +39,14 @@ const uri = 'mongodb://' + process.env.MONGODB_ATLAS_USER + ':' + process.env.MO
     'node-js-mongoose-shard-00-01-554zu.mongodb.net:27017,' +
     'node-js-mongoose-shard-00-02-554zu.mongodb.net:27017/' + process.env.MONGODB_ATLAS_DB_NAME +
     '?ssl=true&replicaSet=node-js-mongoose-shard-0&authSource=admin&retryWrites=true'
-mongoose.connect(uri,
+const port = process.env.LOCAL_PORT
+    mongoose.connect(uri,
     {
         useNewUrlParser: true
     })
     .then(() => {
-        console.log('MONGOOSE CONNECT SUCESS')
-        app.listen(3000)
+        console.log('MONGOOSE CONNECT SUCESS: ' + port)
+        app.listen(port  || 3000)
     },
     err => {
         console.log('MONGOOSE CONNECT ERROR', err)
