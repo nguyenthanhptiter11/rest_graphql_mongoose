@@ -25,7 +25,7 @@ const eventItem = props => (
     </div>
   </li> */
   <li key={props.eventId} className="events__list-item">
-    <FadeInSection key={props.eventId}>
+    <FadeInSection>
       <div className="events__list-item-box">  
         <div>
           <h1>{props.title}</h1>

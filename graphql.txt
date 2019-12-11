@@ -131,3 +131,7 @@ query {
 {
   "query": "mutation { cancelBooking(bookingId: \"5c337ac4fcbb7b27a47545e4\") { title creator { email } } }"
 }
+
+{
+  "query": "mutation{ createUser(userInput: {email: \"admin@admin\", password: \"admin\"}) {email password}}"
+}

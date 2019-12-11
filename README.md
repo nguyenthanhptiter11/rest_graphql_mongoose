@@ -45,3 +45,5 @@ Is this OK? (yes) yes
 [default@localhost rest_graphql_mongoose]$ npm install -save express body-parse nodemon
 
 trying
+
+formik & yup to simple handling form
